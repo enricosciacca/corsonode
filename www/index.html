@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Esempio frontend AJAX con jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <style media="screen">
+
+      body { background-color: #733 }
+
+      blockquote {
+          border-left: solid 50px #8AA;
+          background-color: #A33;
+          padding: 50px;
+          margin: 100px;
+          font-style: italic;
+          font-size: 50px;
+          color: white;
+       }
+    </style>
+  </head>
+  <body>
+
+    <input type="text" name="idazienda" >
+    <button type="button" id="cerca">CERCA</button>
+
+    <blockquote id="citazione"></blockquote>
+
+
+
+    <script type="text/javascript">
+
+      $( function() {
+        $( "#cerca" ).click( function() {
+
+            $.ajax({
+              url: "http://localhost:8000/aziende/" +
+                      $("input[name=idazienda]").val(),
+              type: "GET",
+              dataType: "json"
+            })
+            .done( function(dati) {
+                console.log(dati)
+                $( "#citazione" ).html(
+        "<a href='" + dati.azienda.url +  "'>" + dati.azienda.nome + '</a>' )
+            })
+            //.fail()
+
+
+
+        })
+
+
+
+
+      })
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+  </body>
+</html>
