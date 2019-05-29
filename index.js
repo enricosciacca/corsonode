@@ -17,6 +17,31 @@ let corsConfig = {
 app.use( cors(corsConfig) )
 
 
+let authConfig = {
+    //users: { "enrico": "1234", "loris": "54321" }
+    authorizeAsync: true,
+    authorizer: (username, password, cb) => {
+        /*
+        // eseguirà
+        cb( new Error("....") ) // in caso di errore
+        cb( null, true )      // auth ok
+        cb( null, false )     // auth false
+        */
+        database.login(username, password, (user) => {
+            if (typeof user === "undefined") {
+                cb( null, false ) // login fallito
+            }
+            else {
+                cb( null, true ) //login riuscito
+            }
+            // cb( null, (typeof user !== "undefined")  )
+        })
+    }
+}
+const authMiddleware = basicAuth( authConfig )
+app.use(authMiddleware)
+
+
 const database = require('./database')
 
 
